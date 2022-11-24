@@ -22,7 +22,6 @@ import (
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2/ext"
-	"go.opentelemetry.io/otel/trace"
 )
 
 var _contextOptionKey = &QueryOptions{
@@ -35,7 +34,7 @@ type Settings map[string]interface{}
 type (
 	QueryOption  func(*QueryOptions) error
 	QueryOptions struct {
-		span  trace.SpanContext
+		//span  trace.SpanContext
 		async struct {
 			ok   bool
 			wait bool
@@ -54,12 +53,13 @@ type (
 	}
 )
 
-func WithSpan(span trace.SpanContext) QueryOption {
-	return func(o *QueryOptions) error {
-		o.span = span
-		return nil
-	}
-}
+//
+//func WithSpan(span trace.SpanContext) QueryOption {
+//	return func(o *QueryOptions) error {
+//		o.span = span
+//		return nil
+//	}
+//}
 
 func WithQueryID(queryID string) QueryOption {
 	return func(o *QueryOptions) error {

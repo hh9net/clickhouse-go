@@ -27,9 +27,9 @@ func (c *connect) sendQuery(body string, o *QueryOptions) error {
 	c.debugf("[send query] compression=%t %s", c.compression, body)
 	c.buffer.PutByte(proto.ClientQuery)
 	q := proto.Query{
-		ID:             o.queryID,
-		Body:           body,
-		Span:           o.span,
+		ID:   o.queryID,
+		Body: body,
+		//Span:           o.span,
 		QuotaKey:       o.quotaKey,
 		Compression:    c.compression != CompressionNone,
 		InitialAddress: c.conn.LocalAddr().String(),

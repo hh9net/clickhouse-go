@@ -21,7 +21,6 @@ import (
 	stdbin "encoding/binary"
 	"fmt"
 	chproto "github.com/ClickHouse/ch-go/proto"
-	"go.opentelemetry.io/otel/trace"
 	"os"
 )
 
@@ -31,8 +30,8 @@ var (
 )
 
 type Query struct {
-	ID             string
-	Span           trace.SpanContext
+	ID string
+	//Span           trace.SpanContext
 	Body           string
 	QuotaKey       string
 	Settings       Settings
@@ -99,20 +98,20 @@ func (q *Query) encodeClientInfo(buffer *chproto.Buffer, revision uint64) error 
 	}
 	if revision >= DBMS_MIN_REVISION_WITH_OPENTELEMETRY {
 		switch {
-		case q.Span.IsValid():
-			buffer.PutByte(1)
-			{
-				v := q.Span.TraceID()
-				swap64(v[:]) // https://github.com/ClickHouse/ClickHouse/issues/34369
-				buffer.PutRaw(v[:])
-			}
-			{
-				v := q.Span.SpanID()
-				swap64(v[:]) // https://github.com/ClickHouse/ClickHouse/issues/34369
-				buffer.PutRaw(v[:])
-			}
-			buffer.PutString(q.Span.TraceState().String())
-			buffer.PutByte(byte(q.Span.TraceFlags()))
+		//case q.Span.IsValid():
+		//	buffer.PutByte(1)
+		//	{
+		//		v := q.Span.TraceID()
+		//		swap64(v[:]) // https://github.com/ClickHouse/ClickHouse/issues/34369
+		//		buffer.PutRaw(v[:])
+		//	}
+		//	{
+		//		v := q.Span.SpanID()
+		//		swap64(v[:]) // https://github.com/ClickHouse/ClickHouse/issues/34369
+		//		buffer.PutRaw(v[:])
+		//	}
+		//	buffer.PutString(q.Span.TraceState().String())
+		//	buffer.PutByte(byte(q.Span.TraceFlags()))
 
 		default:
 			buffer.PutByte(0)
